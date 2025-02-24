@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Evacuation Plan</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/panzoom/9.4.0/panzoom.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        #evacuation-map { width: 100%; max-width: 800px; border: 2px solid #000; margin: auto; cursor: grab; }
+        #location-selector { margin: 20px 0; }
+        #download-btn { display: block; margin: 10px auto; padding: 10px 20px; font-size: 16px; background: #007BFF; color: white; border: none; cursor: pointer; }
+        #download-btn:hover { background: #0056b3; }
+        #emergency-contacts { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Factory Evacuation Plan</h2>
+    <label for="location">Select Your Location:</label>
+    <select id="location-selector">
+        <option value="default">-- Choose Location --</option>
+        <option value="location1.png">Main Entrance</option>
+        <option value="location1.png">Factory Floor</option>
+        <option value="location1.png">Warehouse</option>
+    </select>
+    <div id="map-container">
+        <img id="evacuation-map" src="location1.png" alt="Evacuation Map">
+    </div>
+    <button id="download-btn">Download Evacuation Plan</button>
+    
+    <div id="emergency-contacts">
+        <h3>Emergency Contacts</h3>
+        <p><strong>Fire Department:</strong> 999</p>
+        <p><strong>Medical Emergency:</strong> 911</p>
+        <p><strong>Factory Security:</strong> +6012-3456789</p>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            const panZoomInstance = Panzoom(document.getElementById('evacuation-map'));
+            $('#evacuation-map').parent().on('wheel', panZoomInstance.zoomWithWheel);
+
+            $('#location-selector').change(function() {
+                let selectedLocation = $(this).val();
+                if (selectedLocation !== "default") {
+                    $('#evacuation-map').attr('src', selectedLocation);
+                }
+            });
+
+            $('#download-btn').click(function() {
+                let imgSrc = $('#evacuation-map').attr('src');
+                let link = document.createElement('a');
+                link.href = imgSrc;
+                link.download = 'EvacuationPlan.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        });
+    </script>
+</body>
+</html>
